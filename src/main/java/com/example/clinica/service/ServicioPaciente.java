@@ -5,6 +5,10 @@ import com.example.clinica.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ServicioPaciente {
     private PacienteRepository pacienteRepository;
@@ -20,5 +24,21 @@ public class ServicioPaciente {
         }
         this.pacienteRepository.save(paciente);
         return paciente;
+    }
+
+    public boolean eliminarPaciente(int dni){
+        Optional<Paciente> paciente = pacienteRepository.findById(dni);
+        if(paciente.isPresent()){
+            pacienteRepository.delete(paciente.get());
+            return true;
+        }
+        return false;
+    }
+
+
+    public List<Paciente> getAllRecordsPatients(){
+        List<Paciente> pacientes = new ArrayList<Paciente>();
+        pacienteRepository.findAll().forEach(paciente -> pacientes.add(paciente));
+        return pacientes;
     }
 }
